@@ -1,6 +1,5 @@
 package model.services;
 
-
 import model.Field;
 
 public class FieldService {

@@ -20,7 +20,7 @@ public class CrudService<T extends Base> {
         return em().find(type, id);
     }
 
-    public List<T> findAll(Long id) {
+    public List<T> findAll() {
         return em().createQuery("SELECT a FROM " + type.getSimpleName() + " a", type).getResultList();
     }
 

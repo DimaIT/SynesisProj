@@ -1,10 +1,13 @@
 package controllers;
 
-import play.*;
+import model.Field;
+import model.services.FieldService;
 import play.db.jpa.Transactional;
-import play.mvc.*;
-
-import views.html.*;
+import play.mvc.Controller;
+import play.mvc.Result;
+import util.tableUtil.tableServices.RepresentationService;
+import views.html.fields;
+import views.html.index;
 
 public class Application extends Controller {
 
@@ -15,7 +18,7 @@ public class Application extends Controller {
 
     @Transactional
     public static Result fields() {
-        return TODO;
+        return ok(fields.render(RepresentationService.fillTable(Field.class, FieldService.crud().findAll())));
     }
 
     @Transactional
