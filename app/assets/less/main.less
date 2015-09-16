@@ -1,0 +1,39 @@
+h1 {
+  font-size: 2em;
+}
+
+@media (min-width: 600px) {
+  h1 {
+    font-size: 3vw;
+  }
+}
+
+@nav-color: #00BCD4;
+@nav-text-color: #333;
+.navbar {
+  background-color: @nav-color;
+  color: @nav-text-color;
+  .navbar-form .form-control-wrapper input.form-control::placeholder, .navbar-form input.form-control::placeholder {
+    color: @nav-text-color;
+  }
+  .dropdown-menu {
+    border-radius: 2px;
+    li > a {
+      font-size: 1em;
+      padding: 13px 16px;
+      &:hover,
+      &:focus {
+        color: @nav-color;
+        background-color: #eee;
+      }
+    }
+    .active > a {
+      &:hover,
+      &:focus {
+        color: @nav-text-color;
+      }
+      background-color: @nav-color;
+      color: @nav-text-color;
+    }
+  }
+}

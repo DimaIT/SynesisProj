@@ -1,0 +1,19 @@
+@()
+<nav class="navbar navbar-default navbar-material">
+    <div class="container">
+        <div>
+            <ul class="nav navbar-nav pull-left">
+                <li class="col-xs-1"></li>
+                <li class="pull-left"><a href="@routes.Application.index()"><i class="mdi-action-home mdi"></i></a></li>
+                <li class="pull-left"><a href="/fields">@Messages("fields")</a></li>
+                <li class="pull-left"><a href="/responses">@Messages("responses")</a></li>
+            </ul>
+        </div>
+        <div class="">
+            <ul class="nav navbar-nav pull-right">
+                <li class="col-xs-1 pull-right"></li>
+                <li class="pull-right"><a href="#">Войти</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

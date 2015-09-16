@@ -5,11 +5,25 @@
 <html>
     <head>
         <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/material.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/ripples.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/roboto.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("less/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
     </head>
     <body>
+        @header()
         @content
+
+        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/material.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/ripples.min.js")" type="text/javascript"></script>
+        <script>
+            $(document).ready(function() {
+                $.material.init();
+            });
+        </script>
     </body>
 </html>

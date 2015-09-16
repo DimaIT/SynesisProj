@@ -1,3 +1,4 @@
+import com.typesafe.sbt.less.Import.LessKeys
 import play.PlayImport._
 
 name := "playtestproject"
@@ -17,3 +18,7 @@ libraryDependencies ++= Seq(
   "org.hibernate" % "hibernate-entitymanager" % "3.6.9.Final")
 
 unmanagedResourceDirectories in Test <+= baseDirectory(_ / "target/web/public/test")
+
+includeFilter in (Assets, LessKeys.less) := "*.less"
+
+excludeFilter in (Assets, LessKeys.less) := "_*.less"
