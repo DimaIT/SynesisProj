@@ -56,7 +56,7 @@
                         }
                         @if(table.getProperties.isDeleteLinkEnabled) {
                             <li>
-                                <a title="Безвозвратно удалить запись" onclick="if (confirm('Вы уверены, что хотите безвозвратно удалить запись?')) {AjaxDelete('${table.entityName}','${tableRecord.id}','${table.properties.deleteLinkUrlPostfix}')}">
+                                <a title="Безвозвратно удалить запись" onclick="if (confirm('@Messages("sure")')) {DeleteField('@tableRecord.getId')}">
                                     <span class="glyphicon glyphicon-trash"> </span>
                                     Удалить
                                 </a>

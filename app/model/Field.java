@@ -1,5 +1,6 @@
 package model;
 
+import model.modelUtil.FieldType;
 import util.tableUtil.ColumnSettings;
 import util.tableUtil.TableSettings;
 
@@ -13,26 +14,30 @@ import java.util.List;
 @Entity
 @TableSettings("table.fields")
 public class Field extends Base {
-    enum FieldType {
-        LineText,
-        TextArea,
-        Radiobutton,
-        Select,
-        Checkbox;
-    }
 
     @ColumnSettings
-    private String label;
+    private String label = "";
     @ColumnSettings
-    private Boolean required;
+    private Boolean required = false;
     @ColumnSettings
-    private Boolean active;
+    private Boolean active = true;
     @ColumnSettings
-    private FieldType type;
+    private FieldType type = FieldType.LineText;
     @ElementCollection
     private List<String> variants = new LinkedList<>();
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cell> cells;
+
+    public Field() {
+    }
+
+    public Field(String label, Boolean required, Boolean active, FieldType type, List<String> variants) {
+        this.label = label;
+        this.required = required;
+        this.active = active;
+        this.type = type;
+        this.variants = variants;
+    }
 
     public String getLabel() {
         return label;

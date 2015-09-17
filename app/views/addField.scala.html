@@ -1,0 +1,87 @@
+@import model.modelUtil.FieldType
+@(field: model.Field)
+
+@main(Messages("field")) {
+    <script>
+        var varCount = @if(field.getVariants.size() > 0) { @field.getVariants.size()} else {1};
+        var row = function() {
+            var fr1 = '<div class="row" id="var-row-' + varCount + '"  style="padding-top: 0"><div class="col-xs-6">';
+            var input = '<input type="text" name="var' + varCount + '" id="var' + varCount + '" class="form-control"  style="padding-top: 0">';
+            var fr2 = '</div></div>';
+            return fr1 + input + fr2;
+        };
+        var changeSelect = function(select) {
+            var value = select.value;
+            if (value == "Radiobutton" || value == "Select")
+                $('#var-holder').show();
+            else
+                $('#var-holder').hide();
+        };
+        var oneMoreVar = function() {
+            $('#var-holder').append(row());
+            varCount++;
+        };
+        var oneLessVar = function() {
+            if (varCount > 1) {
+                varCount--;
+                $('#var-row-' + varCount).remove();
+            } else
+                alert('@Messages("input.remove.var")');
+        };
+    </script>
+    <div class="col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4 well">
+    @helper.form(action = routes.FieldController.saveField(0)) {
+        <div class="form-group-material-cyan field-input-form">
+            <input type="text" required name="label" id="label" class="form-control floating-label"
+                placeholder="@Messages("input.label")" value="@field.getLabel">
+
+            <div class="togglebutton togglebutton-material-cyan">
+                <label>
+                    @Messages("input.required")
+                    <input class="toggle-input" id="required" name="required" type="checkbox" @if(field.getRequired){checked}>
+                </label>
+            </div>
+            <div class="togglebutton togglebutton-material-cyan">
+                <label>
+                    @Messages("input.active")
+                    <input class="toggle-input" id="active" name="active" type="checkbox" @if(field.getActive){checked}>
+                </label>
+            </div>
+            <div class="row">
+                <label class="col-xs-6 col-sm-4" style="padding-top: 0">@Messages("input.type")</label>
+                <select class="form-control" name="type" style="width: 40%" onchange="changeSelect(this)">
+                    @for(type1 <- FieldType.values()){
+                        <option @if(field.getType.equals(type1)){selected} value="@type1.name()">@type1.name()</option>
+                    }
+                </select>
+            </div>
+
+            //todo fix this
+            <div id="var-holder" style="@if(field.getVariants.size() < 1){display: none;} padding-top: 0">
+                <div class="row"  style="padding-top: 0">
+                    <div class="col-xs-6">
+                        <input type="text" name="var0" id="var0" class="form-control floating-label" placeholder="@Messages("input.var")" style="padding-top: 0">
+                    </div>
+                    <div class="col-xs-1">
+                        <button type="button" class="btn btn-material-cyan" onclick="oneMoreVar()"><span class="glyphicon glyphicon-plus"></span></button>
+                    </div>
+                    <div class="col-xs-2"></div>
+                    <div class="col-xs-1">
+                        <button type="button" class="btn btn-material-cyan" onclick="oneLessVar()"><span class="glyphicon glyphicon-minus"></span></button>
+                    </div>
+                </div>
+                @for(variant <- field.getVariants){
+                    <div class="row" id="var-row-@varCount"  style="padding-top: 0">
+                        <div class="col-xs-6">
+                            <input type="text" name="var@varCount" id="var@varCount" class="form-control"  style="padding-top: 0">
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <button type="submit" name="submit" class="btn btn-material-cyan btn-block">Submit</button>
+
+        </div>
+    }
+    </div>
+}

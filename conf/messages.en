@@ -1,6 +1,15 @@
 fields=Fields
+field=Field
 responses=Responses
 welcome=Welcome!
 table.fields=Field set:
 table.responses=Responses:
 not.available=N/A
+sure=are you sure you want to permanently delete this record?
+
+input.required=Required
+input.label=Enter field label
+input.active=Active
+input.type=Input type
+input.var=Add variants
+input.remove.var=Can not remove last variant
