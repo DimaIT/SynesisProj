@@ -1,3 +1,6 @@
 fields=Fields
 responses=Responses
 welcome=Welcome!
+table.fields=Field set:
+table.responses=Responses:
+not.available=N/A

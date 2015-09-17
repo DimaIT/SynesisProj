@@ -4,7 +4,7 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET     /responses                  controllers.Application.responses
+GET     /responses                  controllers.Application.responsesController
 GET     /fields                     controllers.Application.fields
 GET     /fields/:id                 controllers.Application.field(id: Long)
 

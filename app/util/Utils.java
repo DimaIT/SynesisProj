@@ -3,10 +3,12 @@ package util;
 import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Ordering;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Map;
 
 public final class Utils {
@@ -17,6 +19,18 @@ public final class Utils {
 //    Timer
 //    long start = System.currentTimeMillis();
 //    System.out.println("\n\nProcessed in " + (System.currentTimeMillis() - start) + "ms\n\n");
+
+
+    public static String mkString(Collection collection, String divider) {
+        if (CollectionUtils.isEmpty(collection)) return "";
+        StringBuilder builder = new StringBuilder();
+        for (Object obj: collection) {
+            builder.append(obj);
+            builder.append(divider);
+        }
+        builder.delete(builder.length() - divider.length(), builder.length());
+        return builder.toString();
+    }
 
     public static <K extends Comparable, V extends Comparable> Map<K, V> sortMapByValue(Map<K, V> map) {
         return ImmutableSortedMap.copyOf(map, Ordering.natural().onResultOf(Functions.forMap(map)).compound(Ordering.natural()));

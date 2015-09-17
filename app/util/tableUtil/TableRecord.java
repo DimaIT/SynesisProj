@@ -3,7 +3,7 @@ package util.tableUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Record {
+public class TableRecord {
     protected List<String> columns;
     protected long id;
     protected String value;
@@ -16,11 +16,11 @@ public class Record {
         columns.add(field);
     }
 
-    public Record() {
+    public TableRecord() {
         columns = new ArrayList<>();
     }
 
-    public Record(long id, List<String> columns) {
+    public TableRecord(long id, List<String> columns) {
         this.columns = columns;
         this.id = id;
     }

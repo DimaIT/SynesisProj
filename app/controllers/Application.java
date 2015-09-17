@@ -2,12 +2,14 @@ package controllers;
 
 import model.Field;
 import model.services.FieldService;
+import model.services.ResponseService;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 import util.tableUtil.tableServices.RepresentationService;
 import views.html.fields;
 import views.html.index;
+import views.html.responses;
 
 public class Application extends Controller {
 
@@ -27,8 +29,8 @@ public class Application extends Controller {
     }
 
     @Transactional
-    public static Result responses() {
-        return TODO;
+    public static Result responsesController() {
+        return ok(responses.render(ResponseService.table()));
     }
 
 }

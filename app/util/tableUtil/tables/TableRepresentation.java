@@ -1,6 +1,6 @@
 package util.tableUtil.tables;
 
-import util.tableUtil.Record;
+import util.tableUtil.TableRecord;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,7 +10,7 @@ public class TableRepresentation extends Table {
     public static final String TYPE_TABLE = "table";
 
     private int columnsCount;
-    private List<Record> records = new LinkedList<>();
+    private List<TableRecord> tableRecords = new LinkedList<>();
     private List<String> header = new ArrayList<>();
     private TableRepProperties properties = new TableRepProperties();
 
@@ -18,11 +18,11 @@ public class TableRepresentation extends Table {
     }
 
     public void addRecord(long id, List<String> list) {
-        records.add(new Record(id, list));
+        tableRecords.add(new TableRecord(id, list));
     }
 
-    public void addRecord(Record record) {
-        records.add(record);
+    public void addRecord(TableRecord tableRecord) {
+        tableRecords.add(tableRecord);
     }
 
     public void addHeaderAttribute(String value) {
@@ -42,12 +42,12 @@ public class TableRepresentation extends Table {
         this.columnsCount = columnsCount;
     }
 
-    public List<Record> getRecords() {
-        return records;
+    public List<TableRecord> getTableRecords() {
+        return tableRecords;
     }
 
-    public void setRecords(List<Record> records) {
-        this.records = records;
+    public void setTableRecords(List<TableRecord> tableRecords) {
+        this.tableRecords = tableRecords;
     }
 
     public List<String> getHeader() {

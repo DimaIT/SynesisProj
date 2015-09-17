@@ -1,13 +1,17 @@
 package model;
 
 import util.tableUtil.ColumnSettings;
+import util.tableUtil.TableSettings;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.LinkedList;
 import java.util.List;
 
 @Entity
+@TableSettings("table.fields")
 public class Field extends Base {
     enum FieldType {
         LineText,
@@ -27,6 +31,8 @@ public class Field extends Base {
     private FieldType type;
     @ElementCollection
     private List<String> variants = new LinkedList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Cell> cells;
 
     public String getLabel() {
         return label;
@@ -66,5 +72,13 @@ public class Field extends Base {
 
     public void setVariants(List<String> variants) {
         this.variants = variants;
+    }
+
+    public List<Cell> getCells() {
+        return cells;
+    }
+
+    public void setCells(List<Cell> cells) {
+        this.cells = cells;
     }
 }

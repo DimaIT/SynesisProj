@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.Reflect;
 import util.tableUtil.ColumnSettings;
-import util.tableUtil.Record;
+import util.tableUtil.TableRecord;
 import util.tableUtil.tables.TableRepresentation;
 
 import javax.annotation.Nonnull;
@@ -54,6 +54,7 @@ public final class RepresentationService {
 //        TableRepresentation table = createEmptyTable(entity);
 //        return coreService.crudByClass(entity).map(repo -> fillTable(entity, table, repo.findAll())).orElse(null);
 //    }
+
     public static TableRepresentation createEmptyTable(@Nonnull Class<?> entity) {
         TableRepresentation table = new TableRepresentation();
         setTableHeader(entity, table);
@@ -75,11 +76,11 @@ public final class RepresentationService {
         long start = System.currentTimeMillis();
         if (list != null) {
             Iterable<Method> getters = getRepresentedGetters(entity);
-            Record record;
+            TableRecord tableRecord;
             for (Object item : list) {
-                record = getRecord(getters, item);
-                if (record != null) {
-                    table.addRecord(record);
+                tableRecord = getRecord(getters, item);
+                if (tableRecord != null) {
+                    table.addRecord(tableRecord);
                 }
             }
             logger.info("TableRepresentation for class " + entity.getSimpleName() + " created in "
@@ -91,6 +92,7 @@ public final class RepresentationService {
     public static TableRepresentation fillTable(@Nonnull Class<?> entity, Iterable list) {
         TableRepresentation table = new TableRepresentation();
         setTableHeader(entity, table);
+        table.setMessage(table.getName());
         return  fillTable(entity, table, list);
     }
 
@@ -99,13 +101,13 @@ public final class RepresentationService {
      *
      * @param getters of represented fields of entity
      * @param entity  object
-     * @return filled Record or null if couldn't get an id
+     * @return filled TableRecord or null if couldn't get an id
      */
-    private static Record getRecord(Iterable<Method> getters, Object entity) {
-        Record record = new Record();
+    private static TableRecord getRecord(Iterable<Method> getters, Object entity) {
+        TableRecord tableRecord = new TableRecord();
         try {
             Long id = (Long) entity.getClass().getMethod("getId").invoke(entity);
-            record.setId(id);
+            tableRecord.setId(id);
         } catch (Exception e) {
             try {
                 logger.error("Caught exception(" + e.getMessage() + ") while getting id of " + entity);
@@ -117,11 +119,11 @@ public final class RepresentationService {
         for (Method getter : getters)
             try {
                 Object field = getter.invoke(entity);
-                record.addField(field.toString());
+                tableRecord.addField(field.toString());
             } catch (Exception e) {
-                record.addField("");
+                tableRecord.addField("");
             }
-        return record;
+        return tableRecord;
     }
 
     /**
