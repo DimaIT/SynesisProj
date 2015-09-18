@@ -2,16 +2,51 @@ package model.services;
 
 import model.Cell;
 import model.Field;
+import model.FieldType;
 import model.Record;
+import play.data.Form;
+import play.db.jpa.JPA;
 import play.i18n.Messages;
 import util.tableUtil.tables.TableRepresentation;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ResponseService {
 
     private static CrudService<Record> crud = new CrudService<>(Record.class);
+
+    public static Record saveResponse() {
+        Record newRecord = new Record(new Date());
+        JPA.em().persist(newRecord);
+        Record record = bindFromRequest(newRecord);
+        record.getCells().forEach(cell -> JPA.em().persist(cell));
+        crud.save(record);
+        return crud.save(bindFromRequest(record));
+    }
+
+    public static Record bindFromRequest(Record record) {
+        Map<String, String> data = Form.form().bindFromRequest().data();
+        List<Field> fields = FieldService.getActualFields();
+
+        Set<Cell> cells = fields.stream()
+                .map(field -> createCell(record, field, data.get(field.getLabel())))
+                .collect(Collectors.toSet());
+
+        record.setCells(cells);
+        return record;
+    }
+
+    protected static Cell createCell(Record record, Field field, String value) {
+        if (field.getType().equals(FieldType.Checkbox))
+            value = value != null && value.equals("on") ? Messages.get("true") : Messages.get("false");
+        return new Cell(field, record, value);
+    }
+
+    private static void persistCells(Collection<Cell> list) {
+        list.forEach(cell -> JPA.em().persist(cell));
+    }
+
 
     public static TableRepresentation table() {
         TableRepresentation table = new TableRepresentation();
@@ -23,16 +58,16 @@ public class ResponseService {
                 .setEditLinkEnabled(false)
                 .setDeleteLinkEnabled(false);
         table.setMessage("table.responses");
-        return new TableRepresentation();
+        return table;
     }
 
     public static void fillTable(TableRepresentation table, List<Record> list, List<Field> fields) {
         fields.forEach(field -> table.addHeaderAttribute(field.getLabel()));
         table.setColumnsCount(fields.size());
-        for (Record record: list) {
+        for (Record record : list) {
             List<String> values = new ArrayList<>();
             fields.forEach(field -> values.add(record.findCellByField(field)
-                    .map(Cell::value)
+                    .map(Cell::getValue)
                     .orElse(Messages.get("not.available"))));
             table.addRecord(0L, values);
         }

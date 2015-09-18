@@ -28,6 +28,7 @@ public class Application extends Controller {
 
     @Transactional
     public static Result addResponse() {
-        return ok(responses.render(ResponseService.table()));
+        ResponseService.saveResponse();
+        return redirect("/responses");
     }
 }

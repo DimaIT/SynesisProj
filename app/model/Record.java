@@ -8,20 +8,27 @@ import java.util.Set;
 
 @Entity
 public class Record extends Base{
-    private Date updated;
-    @OneToMany
+    private Date created;
+    @OneToMany(mappedBy = "record")
     private Set<Cell> cells;
 
     public Optional<Cell> findCellByField(Field field) {
         return cells.stream().filter(cell -> cell.getField().equals(field)).findAny();
     }
 
-    public Date getUpdated() {
-        return updated;
+    public Record() {
     }
 
-    public void setUpdated(Date updated) {
-        this.updated = updated;
+    public Record(Date created) {
+        this.created = created;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date updated) {
+        this.created = updated;
     }
 
     public Set<Cell> getCells() {

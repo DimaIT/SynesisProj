@@ -14,7 +14,7 @@ import java.util.List;
 @TableSettings("table.fields")
 public class Field extends Base {
 
-    @ColumnSettings
+    @ColumnSettings // todo make unique
     private String label = "";
     @ColumnSettings
     private Boolean required = false;
@@ -24,8 +24,26 @@ public class Field extends Base {
     private FieldType type = FieldType.LineText;
     @ElementCollection
     private List<String> variants = new LinkedList<>();
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "field",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cell> cells;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Field field = (Field) o;
+        if (label != null ? !label.equals(field.label) : field.label != null) return false;
+        return type == field.type;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = label != null ? label.hashCode() : 0;
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
+    }
 
     public Field() {
     }

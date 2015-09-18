@@ -26,11 +26,12 @@
             @for(col <- table.getHeader) {
                 <th>@col</th>
             }
-            <th>
-                <a href="@addLink" id="addLink">
-                    <span class="glyphicon glyphicon-plus" title="Добавить"> </span>
-                </a>
-            </th>
+
+                <th>
+                    <a href="@addLink" id="addLink">
+                        <span class="glyphicon glyphicon-plus" title="Добавить"> </span>
+                    </a>
+                </th>
         </tr>
     </thead>
     <tbody>
@@ -64,7 +65,8 @@
                         }
                     </ul>
                 </td>
-            }
+            }else {<td></td> }
+
         </tr>
     }
     </tbody>
