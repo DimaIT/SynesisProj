@@ -1,0 +1,45 @@
+@import model.FieldType
+@(field: model.Field)
+
+
+@field.getType match {
+    case FieldType.LineText => {
+        <input type="text" name="@field.getLabel" class="form-control floating-label"
+        placeholder="@field.getLabel" @if(field.getRequired) {required} >
+    }
+    case FieldType.Checkbox => {
+        <div class="togglebutton togglebutton-material-cyan">
+            <label>
+                @field.getLabel
+            <input class="toggle-input" id="required" name="@field.getLabel" type="checkbox">
+            </label>
+        </div>
+    }
+    case FieldType.TextArea => {
+        <textarea class="form-control floating-label"
+        placeholder="@field.getLabel" @if(field.getRequired) {required} ></textarea>
+    }
+    case FieldType.Select => {
+        <div class="row">
+            <label class="col-xs-6 col-sm-4" style="padding-top : 0">@field.getLabel</label>
+            <select class="form-control" name="@field.getLabel" @if(field.getRequired) {required} style="width: 40%">
+            @for(variant <- field.getVariants) {
+                <option value="@variant">@variant</option>
+            }
+            </select>
+        </div>
+    }
+    case FieldType.Radiobutton => {
+        <div class="row">
+            <label class="col-xs-6 col-sm-4" style="padding-top : 0">@field.getLabel</label>
+            <div class="col-xs-6 radio radio-primary" style="margin-top: -15px;">
+            @for(variant <- field.getVariants) {
+                <label style="padding-top: 0">
+                    <input name="@field.getLabel" value="@variant" type="radio">
+                    @variant
+                </label>
+            }
+            </div>
+        </div>
+    }
+}

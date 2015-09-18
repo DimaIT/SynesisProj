@@ -1,6 +1,5 @@
 package model;
 
-import model.modelUtil.FieldType;
 import util.tableUtil.ColumnSettings;
 import util.tableUtil.TableSettings;
 

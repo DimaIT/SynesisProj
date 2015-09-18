@@ -1,21 +1,21 @@
-@import model.modelUtil.FieldType
+@import model.FieldType
 @(field: model.Field)
 
 @main(Messages("field")) {
     <script>
         var varCount = 1;
         @if(field.getVariants.size() > 0) {
-        var initVars = [ @Html(field.getVariants.mkString("\'", "\', \'", "\'")) ];
-        var arrayLength = @field.getVariants.size();
-        $(document).ready( function () {
-            $('#var-holder').show();
-            for (var i = 0; i < arrayLength; i++) {
-                if (i == 0)
-                    $('#var0').val(initVars[i]);
-                else
-                    oneMoreVar(initVars[i]);
-            }
-        });
+            var initVars = [ @Html(field.getVariants.mkString("\'", "\', \'", "\'")) ];
+            var arrayLength = @field.getVariants.size();
+            $(document).ready( function () {
+                $('#var-holder').show();
+                for (var i = 0; i < arrayLength; i++) {
+                    if (i == 0)
+                        $('#var0').val(initVars[i]);
+                    else
+                        oneMoreVar(initVars[i]);
+                }
+            });
         }
         var row = function(value) {
             if (value == undefined)

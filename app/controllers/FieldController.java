@@ -21,8 +21,10 @@ public class FieldController extends Controller {
         Field field;
         if (!id.equals(0L))
             field = FieldService.crud().findOne(id);
-        else
+        else {
             field = new Field();
+            field.setId(0L);
+        }
         return ok(addField.render(field));
     }
 

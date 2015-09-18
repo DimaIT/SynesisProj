@@ -1,6 +1,7 @@
 # Home page
 GET         /                    controllers.Application.index
 GET         /responses           controllers.Application.responsesController
+PUT         /                    controllers.Application.addResponse
 GET         /fields              controllers.FieldController.fields
 GET         /fields/:id          controllers.FieldController.field(id: Long)
 POST        /fields/:id          controllers.FieldController.saveField(id: Long)

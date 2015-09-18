@@ -1,7 +1,7 @@
 package model.services;
 
 import model.Field;
-import model.modelUtil.FieldType;
+import model.FieldType;
 import play.data.Form;
 
 import java.util.*;
