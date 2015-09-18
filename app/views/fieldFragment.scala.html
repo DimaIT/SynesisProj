@@ -16,7 +16,7 @@
         </div>
     }
     case FieldType.TextArea => {
-        <textarea class="form-control floating-label"
+        <textarea class="form-control floating-label" name="@field.getLabel"
         placeholder="@field.getLabel" @if(field.getRequired) {required} ></textarea>
     }
     case FieldType.Select => {
