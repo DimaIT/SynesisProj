@@ -13,3 +13,6 @@ input.active=Active
 input.type=Input type
 input.var=Add variants
 input.remove.var=Can not remove last variant
+input.submit=Submit
+
+input.record.new=New record

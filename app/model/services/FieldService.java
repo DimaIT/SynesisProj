@@ -22,25 +22,29 @@ public class FieldService {
     }
 
     public static Field saveFromRequest(Long id) {
-        Field field = bindFromRequest();
-        if (id.equals(0L)) return crud.save(field); //add
-        field.setId(id);
-        return crud.save(field); //edit
+        Field field;
+        if (id.equals(0L))
+            field = new Field();
+        else
+            field = FieldService.crud.findOne(id);
+        return crud.save(bindFromRequest(field));
     }
 
-    private static Field bindFromRequest() {
+    private static Field bindFromRequest(Field field) {
         Map<String, String> data = Form.form().bindFromRequest().data();
-
-        String label = data.get("label");
-        boolean required = Objects.equals(data.get("required"), "on");
-        boolean active = Objects.equals(data.get("active"), "on");
         FieldType type = FieldType.valueOf(data.get("type"));
+
+        field.setLabel(data.get("label"));
+        field.setRequired(Objects.equals(data.get("required"), "on"));
+        field.setActive(Objects.equals(data.get("active"), "on"));
+        field.setType(type);
         List<String> vars = null;
 
         if (typesWithVars.contains(type))
             vars = getVars(data);
+        field.setVariants(vars);
 
-        return new Field(label, required, active, type, vars);
+        return field;
     }
 
     private static List<String> getVars(Map<String, String> data) {
