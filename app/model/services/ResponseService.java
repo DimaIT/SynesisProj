@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class ResponseService {
 
     public static final CrudService<Record> crud = new CrudService<>(Record.class);
+    public static long recordsCount = 0;
 
     public static boolean saveResponse() {
         Record newRecord = new Record(new Date());
@@ -23,6 +24,7 @@ public class ResponseService {
             JPA.em().persist(newRecord);
             Record record = bindFromRequest(newRecord);
             record.getCells().forEach(cell -> JPA.em().persist(cell));
+            ResponseUpdaterService.updateAll((recordsCount = countRecords()));
             return true;
         } catch (Exception e) {
             Reflect.errorLog(ResponseService.class, e);
@@ -48,14 +50,14 @@ public class ResponseService {
         return new Cell(field, record, value);
     }
 
-    private static void persistCells(Collection<Cell> list) {
-        list.forEach(cell -> JPA.em().persist(cell));
+    public static Long countRecords() {
+        return JPA.em().createQuery("Select count(*) from Record", Long.class).getSingleResult();
     }
-
 
     public static TableRepresentation table() {
         TableRepresentation table = new TableRepresentation();
         List<Record> recordList = crud.findAll();
+        recordsCount = recordList.size();
         List<Field> fieldList = FieldService.getActualFields();
         fillTable(table, recordList, fieldList);
 

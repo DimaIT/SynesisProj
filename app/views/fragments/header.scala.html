@@ -1,4 +1,14 @@
 @()
+<script>
+    $(document).ready( function () {
+        var WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
+        var socket = new WS('@routes.ResponseController.registerMenu().webSocketURL()');
+
+        socket.onmessage = function(event){
+            $('#responses_count').text(event.data);
+        };
+    });
+</script>
 <nav class="navbar navbar-default navbar-material">
     <div class="container">
         <div>
@@ -6,7 +16,7 @@
                 <li class="col-xs-1"></li>
                 <li class="pull-left"><a href="@routes.Application.index()"><i class="mdi-action-home mdi"></i></a></li>
                 <li class="pull-left"><a href="/fields">@Messages("fields")</a></li>
-                <li class="pull-left"><a href="/responses">@Messages("responses")</a></li>
+                <li class="pull-left"><a href="/responses">@Messages("responses") (<span id="responses_count">1</span>)</a></li>
             </ul>
         </div>
         <div class="">

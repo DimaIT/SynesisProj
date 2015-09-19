@@ -1,15 +1,16 @@
 # Home page
-GET         /                    controllers.Application.index(redirect : String ?= "false" )
-GET         /responses           controllers.ResponseController.responsesController
-DELETE      /responses/:id       controllers.ResponseController.responseDelete(id: Long)
-POST        /                    controllers.ResponseController.addResponse
-GET         /fields              controllers.FieldController.fields
-GET         /fields/:id          controllers.FieldController.field(id: Long)
-POST        /fields/:id          controllers.FieldController.saveField(id: Long)
-DELETE      /fields/:id          controllers.FieldController.deleteField(id: Long)
+GET           /                     controllers.Application.index(redirect : String ?= "false" )
+GET           /responses            controllers.ResponseController.responsesController
+DELETE        /responses/:id        controllers.ResponseController.responseDelete(id: Long)
+POST          /                     controllers.ResponseController.addResponse
+GET           /menu/updater         controllers.ResponseController.registerMenu
+GET           /fields               controllers.FieldController.fields
+GET           /fields/:id           controllers.FieldController.field(id: Long)
+POST          /fields/:id           controllers.FieldController.saveField(id: Long)
+DELETE        /fields/:id           controllers.FieldController.deleteField(id: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file        controllers.Assets.at(path="/public", file)
+GET           /assets/*file         controllers.Assets.at(path="/public", file)
 
     
