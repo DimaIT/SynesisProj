@@ -1,16 +1,17 @@
 @(fields: List[model.Field])
 
-@main(Messages("input.record.new")) {
+@main(Messages("responses.new")) {
     <div class="col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3 well">
-    @helper.form(action = routes.Application.addResponse()) {
-        <div class="form-group-material-cyan field-input-form">
-            @for(field <- fields) {
-                @fieldFragment(field)
-            }
-
-            <button type="submit" name="submit" class="btn btn-material-cyan btn-block">@Messages("input.submit")</button>
-
-        </div>
-    }
+        <form id="form-ajax-submit" action="@routes.ResponseController.addResponse().url" method="@routes.ResponseController.addResponse().method">
+            <div class="form-group-material-cyan field-input-form">
+                @for(field <- fields) {
+                    @fragments.fieldFragment(field)
+                }
+                <button type="submit" onclick="ajaxSubmit(event, '@Messages("responses.add.success")')"
+                    class="btn btn-material-cyan btn-block">@Messages("input.submit")</button>
+                <button type="reset"
+                    class="btn btn-material-light-green btn-block">@Messages("input.reset")</button>
+            </div>
+        </form>
     </div>
 }

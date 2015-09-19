@@ -1,5 +1,6 @@
 package model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.Date;
@@ -7,9 +8,9 @@ import java.util.Optional;
 import java.util.Set;
 
 @Entity
-public class Record extends Base{
+public class Record extends Base {
     private Date created;
-    @OneToMany(mappedBy = "record")
+    @OneToMany(mappedBy = "record", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Cell> cells;
 
     public Optional<Cell> findCellByField(Field field) {

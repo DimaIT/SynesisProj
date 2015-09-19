@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.Map;
 
 public final class Utils {
+    public static final String ERROR = "error";
+    public static final String SUCCESS = "success";
     public static final SimpleDateFormat WEB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     public static final SimpleDateFormat WEB_DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     public static int DAY = 1000 * 60 * 60 * 24;

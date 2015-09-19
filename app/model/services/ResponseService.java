@@ -7,6 +7,7 @@ import model.Record;
 import play.data.Form;
 import play.db.jpa.JPA;
 import play.i18n.Messages;
+import util.Reflect;
 import util.tableUtil.tables.TableRepresentation;
 
 import java.util.*;
@@ -14,15 +15,19 @@ import java.util.stream.Collectors;
 
 public class ResponseService {
 
-    private static CrudService<Record> crud = new CrudService<>(Record.class);
+    public static final CrudService<Record> crud = new CrudService<>(Record.class);
 
-    public static Record saveResponse() {
+    public static boolean saveResponse() {
         Record newRecord = new Record(new Date());
-        JPA.em().persist(newRecord);
-        Record record = bindFromRequest(newRecord);
-        record.getCells().forEach(cell -> JPA.em().persist(cell));
-        crud.save(record);
-        return crud.save(bindFromRequest(record));
+        try {
+            JPA.em().persist(newRecord);
+            Record record = bindFromRequest(newRecord);
+            record.getCells().forEach(cell -> JPA.em().persist(cell));
+            return true;
+        } catch (Exception e) {
+            Reflect.errorLog(ResponseService.class, e);
+            return false;
+        }
     }
 
     public static Record bindFromRequest(Record record) {
@@ -56,7 +61,7 @@ public class ResponseService {
 
         table.getProperties()
                 .setEditLinkEnabled(false)
-                .setDeleteLinkEnabled(false);
+                /*.setDeleteLinkEnabled(false)*/;
         table.setMessage("table.responses");
         return table;
     }
@@ -69,7 +74,7 @@ public class ResponseService {
             fields.forEach(field -> values.add(record.findCellByField(field)
                     .map(Cell::getValue)
                     .orElse(Messages.get("not.available"))));
-            table.addRecord(0L, values);
+            table.addRecord(record.getId(), values);
         }
     }
 }

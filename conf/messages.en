@@ -10,6 +10,9 @@ sure=are you sure you want to permanently delete this record?
 true=Yes
 false=No
 
+error.message=Error occurred
+success.message=Operation finished successfully
+
 input.required=Required
 input.label=Enter field label
 input.active=Active
@@ -17,7 +20,10 @@ input.type=Input type
 input.var=Add variants
 input.remove.var=Can not remove last variant
 input.submit=Submit
+input.reset=Reset
 
-input.record.new=New record
+fields.add.success=Field submitted successfully
 
+responses.new=New response
 responses.add=Add new response
+responses.add.success=New response added successfully

@@ -1,7 +1,8 @@
 # Home page
-GET         /                    controllers.Application.index
-GET         /responses           controllers.Application.responsesController
-POST         /                    controllers.Application.addResponse
+GET         /                    controllers.Application.index(redirect : String ?= "false" )
+GET         /responses           controllers.ResponseController.responsesController
+DELETE      /responses/:id       controllers.ResponseController.responseDelete(id: Long)
+POST        /                    controllers.ResponseController.addResponse
 GET         /fields              controllers.FieldController.fields
 GET         /fields/:id          controllers.FieldController.field(id: Long)
 POST        /fields/:id          controllers.FieldController.saveField(id: Long)

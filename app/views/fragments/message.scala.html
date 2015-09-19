@@ -1,0 +1,12 @@
+@import util._
+@()
+<div class="row">
+    <div id="message-container" class="container"></div>
+</div>
+@if(flash.get(Message.MESSAGE) != null) {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            message('@flash.get(Message.MESSAGE_TYPE))','@flash.get(Message.MESSAGE))');
+        })
+    </script>
+}

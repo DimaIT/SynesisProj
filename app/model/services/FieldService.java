@@ -3,6 +3,7 @@ package model.services;
 import model.Field;
 import model.FieldType;
 import play.data.Form;
+import util.Reflect;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,13 +22,19 @@ public class FieldService {
         return crud.findAll().stream().filter(Field::getActive).collect(Collectors.toList());
     }
 
-    public static Field saveFromRequest(Long id) {
+    public static boolean saveFromRequest(Long id) {
         Field field;
-        if (id.equals(0L))
-            field = new Field();
-        else
-            field = FieldService.crud.findOne(id);
-        return crud.save(bindFromRequest(field));
+        try {
+            if (id.equals(0L))
+                field = new Field();
+            else
+                field = FieldService.crud.findOne(id);
+            crud.save(bindFromRequest(field));
+            return true;
+        } catch (Exception e) {
+            Reflect.errorLog(FieldService.class, e);
+            return false;
+        }
     }
 
     private static Field bindFromRequest(Field field) {

@@ -1,56 +1,49 @@
-// todo refactor
-var AjaxDelete = function (tableName, id, urlSuffix, inactivate) {
-    var deleteLink = 'delete';
-    if (!!inactivate) deleteLink = 'inactivate';
+var AjaxDelete = function (id, url) {
     $.ajax({
         type: 'DELETE',
-        url: '/table/' + tableName + '/' + deleteLink + '/' + id + '/' + urlSuffix,
-        dataType: 'json',
+        url: '/' + url + '/' + id,
         async: true,
         success: function (result) {
-            if (result) {
-                success();
-                var row = $('#' + id);
-                row.hide();
-                $('#datatable').dataTable().fnDeleteRow(row, null, true);
-            }
+            if (result == 'success')
+                message('success', 'Operation finished successfully');
             else
-                deleteFailed();
+                message('success', result);
+            var row = $('#' + id);
+            row.hide();
+            $('#datatable').dataTable().fnDeleteRow(row, null, true);
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + jqXHR.responseText);
+        error: function (xhr) {
+            message('danger', xhr.responseText);
         }
     });
 };
-var DeleteField = function (id) {
+var ajaxSubmit = function (ev, successMessage) {
+    var frm = $('#form-ajax-submit');
     $.ajax({
-        type: 'DELETE',
-        url: '/fields/' + id,
-        async: true,
+        type: frm.attr('method'),
+        url: frm.attr('action'),
+        data: frm.serialize(),
         success: function (result) {
             if (result == 'success') {
-                //success();
-                var row = $('#' + id);
-                row.hide();
-                $('#datatable').dataTable().fnDeleteRow(row, null, true);
+                frm[0].reset();
+                if (successMessage == undefined)
+                    message('success', '@Messages("success.message")');
+                else
+                    message('success', successMessage);
+            } else {
+                if (result.indexOf("redirect:") == 0)
+                    window.location.href = result.substring(9, result.length);
+                else
+                    message('warning', result);
             }
-            else
-                deleteFailed();
         },
-        error: function (jqXHR, textStatus, errorThrown) {
-            //alert(jqXHR.status + ' ' + jqXHR.responseText);
+        error: function (xhr) {
+            message('danger', xhr.responseText);
         }
     });
+    ev.preventDefault();
 };
 var message = function (type, message) {
-    $("#message-container").html('<div class="alert alert-' + type + '"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' + message + '</div>')
-};
-var success = function () {
-    message('success', 'Операция завершена успешно')
-};
-var error = function () {
-    message('danger', 'Произошла ошибка')
-};
-var deleteFailed = function () {
-    message('danger', 'Произошла ошибка, возможно запись используется в другой таблице')
+    if (type == '') type = 'info';
+    $("#message-container").html('<div class="alert alert-' + type + '"><button type="button" class="close" data-dismiss="alert">&times;</button>' + message + '</div>')
 };

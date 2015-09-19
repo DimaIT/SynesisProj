@@ -3,6 +3,7 @@ package controllers;
 import model.Field;
 import model.services.FieldService;
 import play.db.jpa.Transactional;
+import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import util.tableUtil.tableServices.RepresentationService;
@@ -31,8 +32,8 @@ public class FieldController extends Controller {
 
     @Transactional
     public static Result saveField(Long id) {
-        FieldService.saveFromRequest(id);
-        return redirect("/fields");
+        boolean b = FieldService.saveFromRequest(id);
+        return b ? ok("redirect:/fields") : internalServerError(Messages.get("error.message"));
     }
 
     @Transactional
