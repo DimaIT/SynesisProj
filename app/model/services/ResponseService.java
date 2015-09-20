@@ -8,6 +8,7 @@ import play.data.Form;
 import play.db.jpa.JPA;
 import play.i18n.Messages;
 import util.Reflect;
+import util.tableUtil.TableRecord;
 import util.tableUtil.tables.TableRepresentation;
 
 import java.util.*;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 public class ResponseService {
 
     public static final CrudService<Record> crud = new CrudService<>(Record.class);
-    public static long recordsCount = 0;
+    private static long recordsCount = 0;
 
     public static boolean saveResponse() {
         Record newRecord = new Record(new Date());
@@ -24,7 +25,7 @@ public class ResponseService {
             JPA.em().persist(newRecord);
             Record record = bindFromRequest(newRecord);
             record.getCells().forEach(cell -> JPA.em().persist(cell));
-            ResponseUpdaterService.updateAll((recordsCount = countRecords()));
+            ResponseUpdaterService.updateAll(record);
             return true;
         } catch (Exception e) {
             Reflect.errorLog(ResponseService.class, e);
@@ -51,7 +52,11 @@ public class ResponseService {
     }
 
     public static Long countRecords() {
-        return JPA.em().createQuery("Select count(*) from Record", Long.class).getSingleResult();
+        try {
+            return (recordsCount = JPA.em().createQuery("Select count(*) from Record", Long.class).getSingleResult());
+        } catch (Exception e) {
+            return recordsCount;
+        }
     }
 
     public static TableRepresentation table() {
@@ -72,11 +77,16 @@ public class ResponseService {
         fields.forEach(field -> table.addHeaderAttribute(field.getLabel()));
         table.setColumnsCount(fields.size());
         for (Record record : list) {
-            List<String> values = new ArrayList<>();
-            fields.forEach(field -> values.add(record.findCellByField(field)
-                    .map(Cell::getValue)
-                    .orElse(Messages.get("not.available"))));
-            table.addRecord(record.getId(), values);
+            table.addRecord(createRecord(fields, record));
         }
     }
+
+    public static TableRecord createRecord(List<Field> fields, Record record) {
+        List<String> values = new ArrayList<>();
+        fields.forEach(field -> values.add(record.findCellByField(field)
+                .map(Cell::getValue)
+                .orElse(Messages.get("not.available"))));
+        return new TableRecord(record.getId(), values);
+    }
+
 }

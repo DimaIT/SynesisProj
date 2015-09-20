@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 public class FieldService {
 
+    public static List<Field> actual;
+
     private static EnumSet<FieldType> typesWithVars = EnumSet.of(FieldType.Radiobutton, FieldType.Select);
 
     private static CrudService<Field> crud = new CrudService<>(Field.class);
@@ -19,7 +21,7 @@ public class FieldService {
     }
 
     public static List<Field> getActualFields() {
-        return crud.findAll().stream().filter(Field::getActive).collect(Collectors.toList());
+        return (actual = crud.findAll().stream().filter(Field::getActive).collect(Collectors.toList()));
     }
 
     public static boolean saveFromRequest(Long id) {

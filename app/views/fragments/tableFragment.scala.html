@@ -6,8 +6,9 @@
 
 <legend>@Messages(table.getMessage)</legend>
 <script type="text/javascript">
+        var table;
         $(document).ready( function () {
-            $('#datatable').DataTable({
+            table = $('#datatable').DataTable({
                 "paging":   false,
                 "info":     false,
                 "stateSave" : true,
@@ -16,7 +17,7 @@
                 ]
             });
         } );
-    </script>
+</script>
 <div class="marker"></div>
 
 <table class="display dataTable" id="datatable">

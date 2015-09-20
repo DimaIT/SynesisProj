@@ -4,6 +4,7 @@ GET           /responses            controllers.ResponseController.responsesCont
 DELETE        /responses/:id        controllers.ResponseController.responseDelete(id: Long)
 POST          /                     controllers.ResponseController.addResponse
 GET           /menu/updater         controllers.ResponseController.registerMenu
+GET           /table/updater         controllers.ResponseController.registerTable
 GET           /fields               controllers.FieldController.fields
 GET           /fields/:id           controllers.FieldController.field(id: Long)
 POST          /fields/:id           controllers.FieldController.saveField(id: Long)

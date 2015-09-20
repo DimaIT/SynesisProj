@@ -1,5 +1,6 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import model.services.ResponseService;
 import model.services.ResponseUpdaterService;
 import play.db.jpa.Transactional;
@@ -26,15 +27,18 @@ public class ResponseController extends Controller {
     public static Result responseDelete(Long id) {
         try {
             ResponseService.crud.delete(id);
-            ResponseUpdaterService.updateAll();
+            ResponseUpdaterService.updateAll(id);
             return ok("success");
         } catch (Exception e) {
             return internalServerError("failed");
         }
     }
 
-    @Transactional
     public static WebSocket<String> registerMenu() {
-        return WebSocket.withActor(ResponseUpdaterService::props);
+        return WebSocket.withActor(ResponseUpdaterService::menuProps);
+    }
+
+    public static WebSocket<JsonNode> registerTable() {
+        return WebSocket.withActor(ResponseUpdaterService::tableProps);
     }
 }

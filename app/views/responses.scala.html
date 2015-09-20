@@ -3,6 +3,38 @@
 
 @main(Messages("responses")) {
     <div class="container">
+        <script>
+        var rowrow;
+            $(document).ready( function () {
+                var WS = window['MozWebSocket'] ? window['MozWebSocket'] : WebSocket;
+                var socket = new WS('@routes.ResponseController.registerTable().webSocketURL()');
+
+                socket.onmessage = function(event) {
+                    var data = JSON.parse(event.data);
+                    var id = data.id;
+
+                    if (data.action == 'delete') {
+                        var row = $('#' + id);
+                        row.hide();
+                        table.fnDeleteRow(row, null, true);
+                    } else if (data.action == 'insert') {
+                        rowrow = table.row.add([
+                        @for(label <- table.getHeader) {
+                            data.@label.replace(' ', '_'),
+                        }
+                        @if(table.getProperties.isDeleteLinkEnabled) {
+                            '<a title="Безвозвратно удалить запись" onclick="if (confirm(\'@Messages("sure")\')) {AjaxDelete('+ id +', \'responses\')}">' +
+                             '<span class="glyphicon glyphicon-trash"> </span> Удалить</a>'
+                        }else {
+                            ''
+                        }
+                        ]).draw( false );
+                        $('#datatable').find('tr:last').attr('id', id);
+                    }
+                };
+            });
+        </script>
+
         @fragments.tableFragment(table, "/", "responses")
     </div>
 }
