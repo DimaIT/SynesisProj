@@ -180,6 +180,7 @@ public final class Reflect {
                 try {
                     return entity.getMethod("is" + capitalize(field.getName()));
                 } catch (Exception ex) {
+                    // logging
                 }
             logger.error("No getter method for field: " + field.getName());
             throw new RuntimeException("No getter method for field: " + field.getName());

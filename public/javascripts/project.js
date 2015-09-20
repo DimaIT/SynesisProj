@@ -19,29 +19,34 @@ var AjaxDelete = function (id, url) {
 };
 var ajaxSubmit = function (ev, successMessage) {
     var frm = $('#form-ajax-submit');
-    $.ajax({
-        type: frm.attr('method'),
-        url: frm.attr('action'),
-        data: frm.serialize(),
-        success: function (result) {
-            if (result == 'success') {
-                frm[0].reset();
-                if (successMessage == undefined)
-                    message('success', '@Messages("success.message")');
-                else
-                    message('success', successMessage);
-            } else {
-                if (result.indexOf("redirect:") == 0)
-                    window.location.href = result.substring(9, result.length);
-                else
-                    message('warning', result);
+    if (frm[0].checkValidity()) {
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (result) {
+                if (result == 'success') {
+                    frm[0].reset();
+                    if (successMessage == undefined)
+                        message('success', '@Messages("success.message")');
+                    else
+                        message('success', successMessage);
+                } else {
+                    if (result.indexOf("redirect:") == 0)
+                        window.location.href = result.substring(9, result.length);
+                    else
+                        message('warning', result);
+                }
+            },
+            error: function (xhr) {
+                message('danger', xhr.responseText);
             }
-        },
-        error: function (xhr) {
-            message('danger', xhr.responseText);
-        }
-    });
-    ev.preventDefault();
+        });
+        ev.preventDefault();
+    }
+    else {
+        message('warning', 'Please, enter all required fields')
+    }
 };
 var message = function (type, message) {
     if (type == '') type = 'info';

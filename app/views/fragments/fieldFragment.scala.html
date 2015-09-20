@@ -35,7 +35,7 @@
             <div class="col-xs-6 radio radio-primary" style="margin-top: -15px;">
             @for(variant <- field.getVariants) {
                 <label style="padding-top: 0">
-                    <input name="@field.getLabel" value="@variant" type="radio">
+                    <input name="@field.getLabel" value="@variant" @if(field.getRequired) {required} type="radio">
                     @variant
                 </label>
             }

@@ -1,7 +1,7 @@
 @import util.tableUtil.tables.TableRepresentation
 @(table: TableRepresentation, addLink: String, deleteLink: String)
 
-<script src="@routes.Assets.at("javascripts/dataTables.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/datatables.min.js")" type="text/javascript"></script>
 <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/dataTables.css")">
 
 <legend>@Messages(table.getMessage)</legend>
@@ -9,6 +9,7 @@
         var table;
         $(document).ready( function () {
             table = $('#datatable').DataTable({
+                "ordering": false,
                 "paging":   false,
                 "info":     false,
                 "stateSave" : true,

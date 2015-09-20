@@ -29,11 +29,10 @@ public class FieldController extends Controller {
         return ok(addField.render(field));
     }
 
-
     @Transactional
     public static Result saveField(Long id) {
-        boolean b = FieldService.saveFromRequest(id);
-        return b ? ok("redirect:/fields") : internalServerError(Messages.get("error.message"));
+        String message = FieldService.saveFromRequest(id);
+        return message == null ? ok("redirect:/fields") : internalServerError(Messages.get("error.message") + "; " + message);
     }
 
     @Transactional

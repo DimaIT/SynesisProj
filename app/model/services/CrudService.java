@@ -2,6 +2,8 @@ package model.services;
 
 
 import model.Base;
+import model.Field;
+import model.Record;
 
 import java.util.List;
 
@@ -29,6 +31,15 @@ public class CrudService<T extends Base> {
     }
 
     public T save(T entity) {
-        return em().merge(entity);
+        T t = em().merge(entity);
+        em().flush();
+        em().getTransaction().commit();
+        em().getTransaction().begin();
+        return t;
+    }
+
+    public static void deleteAll() {
+        new CrudService<>(Record.class).findAll().forEach(r -> em().remove(r));
+        new CrudService<>(Field.class).findAll().forEach(f -> em().remove(f));
     }
 }

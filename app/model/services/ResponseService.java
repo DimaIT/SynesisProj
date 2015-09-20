@@ -68,7 +68,7 @@ public class ResponseService {
 
         table.getProperties()
                 .setEditLinkEnabled(false)
-                /*.setDeleteLinkEnabled(false)*/;
+                .setDeleteLinkEnabled(false);
         table.setMessage("table.responses");
         return table;
     }

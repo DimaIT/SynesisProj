@@ -1,7 +1,9 @@
 package controllers;
 
 import model.Field;
+import model.services.CrudService;
 import model.services.FieldService;
+import model.services.ResponseUpdaterService;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -21,5 +23,12 @@ public class Application extends Controller {
             return ok(addRecord.render(fields));
         flash("message");
         return redirect("/fields");
+    }
+
+    @Transactional
+    public static Result cleanDB() {
+        CrudService.deleteAll();
+        ResponseUpdaterService.updateAll(0L);
+        return redirect("/");
     }
 }

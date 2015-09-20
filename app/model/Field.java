@@ -3,10 +3,7 @@ package model;
 import util.tableUtil.ColumnSettings;
 import util.tableUtil.TableSettings;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,7 +11,8 @@ import java.util.List;
 @TableSettings("table.fields")
 public class Field extends Base {
 
-    @ColumnSettings // todo make unique
+    @ColumnSettings
+    @Column(unique = true)
     private String label = "";
     @ColumnSettings
     private Boolean required = false;

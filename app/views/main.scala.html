@@ -15,9 +15,10 @@
     </head>
     <body>
         @fragments.header()
-        @fragments.message()
-        @content
-
+        <div class="main-cl">
+            @fragments.message()
+            @content
+        </div>
         <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/material.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/ripples.min.js")" type="text/javascript"></script>

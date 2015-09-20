@@ -3,6 +3,7 @@ package model.services;
 import model.Field;
 import model.FieldType;
 import play.data.Form;
+import play.i18n.Messages;
 import util.Reflect;
 
 import java.util.*;
@@ -24,7 +25,7 @@ public class FieldService {
         return (actual = crud.findAll().stream().filter(Field::getActive).collect(Collectors.toList()));
     }
 
-    public static boolean saveFromRequest(Long id) {
+    public static String saveFromRequest(Long id) {
         Field field;
         try {
             if (id.equals(0L))
@@ -32,10 +33,10 @@ public class FieldService {
             else
                 field = FieldService.crud.findOne(id);
             crud.save(bindFromRequest(field));
-            return true;
+            return null;
         } catch (Exception e) {
             Reflect.errorLog(FieldService.class, e);
-            return false;
+            return Messages.get("fields.add.error");
         }
     }
 

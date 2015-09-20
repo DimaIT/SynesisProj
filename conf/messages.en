@@ -6,6 +6,7 @@ table.fields=Field set:
 table.responses=Responses:
 not.available=N/A
 sure=are you sure you want to permanently delete this record?
+thank.you=Thank you for submiting your data!
 
 true=Yes
 false=No
@@ -22,6 +23,7 @@ input.remove.var=Can not remove last variant
 input.submit=Submit
 input.reset=Reset
 
+fields.add.error=Try another field label
 fields.add.success=Field submitted successfully
 
 responses.new=New response
