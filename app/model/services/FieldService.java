@@ -9,20 +9,20 @@ import util.Reflect;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Field processing service
+ * - save fields
+ * - get actual field list
+ * - gives access to field crud service
+ */
 public class FieldService {
-
-    public static List<Field> actual;
 
     private static EnumSet<FieldType> typesWithVars = EnumSet.of(FieldType.Radiobutton, FieldType.Select);
 
-    private static CrudService<Field> crud = new CrudService<>(Field.class);
-
-    public static CrudService<Field> crud() {
-        return crud;
-    }
+    public static final CrudService<Field> crud = new CrudService<>(Field.class);
 
     public static List<Field> getActualFields() {
-        return (actual = crud.findAll().stream().filter(Field::getActive).collect(Collectors.toList()));
+        return crud.findAll().stream().filter(Field::getActive).collect(Collectors.toList());
     }
 
     public static String saveFromRequest(Long id) {

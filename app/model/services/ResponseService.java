@@ -14,10 +14,24 @@ import util.tableUtil.tables.TableRepresentation;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Response processing service
+ * - save response
+ * - track current recordsCount
+ * - creates response table
+ */
 public class ResponseService {
 
     public static final CrudService<Record> crud = new CrudService<>(Record.class);
     private static long recordsCount = 0;
+
+    public static Long countRecords() {
+        try {
+            return (recordsCount = JPA.em().createQuery("Select count(*) from Record", Long.class).getSingleResult());
+        } catch (Exception e) {
+            return recordsCount;
+        }
+    }
 
     public static boolean saveResponse() {
         Record newRecord = new Record(new Date());
@@ -33,7 +47,7 @@ public class ResponseService {
         }
     }
 
-    public static Record bindFromRequest(Record record) {
+    private static Record bindFromRequest(Record record) {
         Map<String, String> data = Form.form().bindFromRequest().data();
         List<Field> fields = FieldService.getActualFields();
 
@@ -45,18 +59,10 @@ public class ResponseService {
         return record;
     }
 
-    protected static Cell createCell(Record record, Field field, String value) {
+    private static Cell createCell(Record record, Field field, String value) {
         if (field.getType().equals(FieldType.Checkbox))
             value = value != null && value.equals("on") ? Messages.get("true") : Messages.get("false");
         return new Cell(field, record, value);
-    }
-
-    public static Long countRecords() {
-        try {
-            return (recordsCount = JPA.em().createQuery("Select count(*) from Record", Long.class).getSingleResult());
-        } catch (Exception e) {
-            return recordsCount;
-        }
     }
 
     public static TableRepresentation table() {
@@ -73,7 +79,7 @@ public class ResponseService {
         return table;
     }
 
-    public static void fillTable(TableRepresentation table, List<Record> list, List<Field> fields) {
+    private static void fillTable(TableRepresentation table, List<Record> list, List<Field> fields) {
         fields.forEach(field -> table.addHeaderAttribute(field.getLabel()));
         table.setColumnsCount(fields.size());
         for (Record record : list) {
@@ -81,7 +87,7 @@ public class ResponseService {
         }
     }
 
-    public static TableRecord createRecord(List<Field> fields, Record record) {
+    private static TableRecord createRecord(List<Field> fields, Record record) {
         List<String> values = new ArrayList<>();
         fields.forEach(field -> values.add(record.findCellByField(field)
                 .map(Cell::getValue)

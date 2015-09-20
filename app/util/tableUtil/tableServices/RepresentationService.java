@@ -24,7 +24,7 @@ public final class RepresentationService {
 
     /**
      * Getting table names & column names
-     * from @...Info annotations
+     * from @...Settings annotations
      * Put them into TableRepresentation
      *
      * @return table with header or null if error ocures
@@ -43,29 +43,8 @@ public final class RepresentationService {
     }
 
     /**
-     * Creating Table;
-     * setting header;
-     * adding all rows by CrudRepository.findAll() method
-     *
-     * @return filled table
-     */
-    //todo fix
-//    TableRepresentation createFullTable(@Nonnull Class<?> entity) {
-//        TableRepresentation table = createEmptyTable(entity);
-//        return coreService.crudByClass(entity).map(repo -> fillTable(entity, table, repo.findAll())).orElse(null);
-//    }
-
-    public static TableRepresentation createEmptyTable(@Nonnull Class<?> entity) {
-        TableRepresentation table = new TableRepresentation();
-        setTableHeader(entity, table);
-        table.setMessage("Таблица " + table.getName());
-        return table;
-    }
-
-    /**
      * Filling table with rows from list;
-     * items from list are converting by "getEntityRecord()" method if entity implements AutoDisplayedTable
-     * or by getting & converting to String represented fields of each item
+     * items from list are converted to TableRecords with list of Strings which represent fields of each item
      *
      * @param entity class
      * @param table  in which we put records

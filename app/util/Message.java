@@ -1,9 +1,11 @@
 package util;
 
-
 import play.i18n.Messages;
 import play.mvc.Http;
 
+/**
+ * Flash message helper
+ */
 public class Message {
     public static final String MESSAGE = "message";
     public static final String MESSAGE_TYPE = "message_type";

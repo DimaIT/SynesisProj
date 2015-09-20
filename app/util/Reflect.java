@@ -12,6 +12,9 @@ import java.util.*;
 
 import static org.springframework.util.StringUtils.capitalize;
 
+/**
+ * Class with different static util methods
+ */
 public final class Reflect {
     private static final Logger logger = LoggerFactory.getLogger(Reflect.class);
     private static final boolean FULL_STACK_TRACE_ENABLED = false;

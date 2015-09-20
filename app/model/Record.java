@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Response record entity
+ */
 @Entity
 public class Record extends Base {
     private Date created;

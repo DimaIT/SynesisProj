@@ -13,11 +13,22 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Web socket service
+ * updates header response count & response table
+ */
 public class ResponseUpdaterService extends UntypedActor {
 
+    /**
+     * Actor's refs
+     */
     private static Set<ActorRef> menuUpdaters = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private static Set<ActorRef> tableUpdaters = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
+    /**
+     * Updates headers
+     * @param tmp new value
+     */
     private static void updateMenu(long tmp) {
         for (ActorRef updater : menuUpdaters) {
             if (updater.isTerminated()) menuUpdaters.remove(updater);
@@ -25,6 +36,10 @@ public class ResponseUpdaterService extends UntypedActor {
         }
     }
 
+    /**
+     * Updates tables with new records or deletes them by id
+     * @param node json node
+     */
     private static void updateTable(ObjectNode node) {
         for (ActorRef updater : tableUpdaters) {
             if (updater.isTerminated()) tableUpdaters.remove(updater);
@@ -32,16 +47,28 @@ public class ResponseUpdaterService extends UntypedActor {
         }
     }
 
+    /**
+     * updates with new record
+     */
     public static void updateAll(Record record) {
         updateMenu(ResponseService.countRecords());
         updateTable(create(record));
     }
 
+    /**
+     * updates with deleted record
+     * @param id of record
+     */
     public static void updateAll(long id) {
         updateMenu(ResponseService.countRecords());
         updateTable(create(id));
     }
 
+    /**
+     * creates json node for row deletion
+     * @param id of record
+     * @return node
+     */
     public static ObjectNode create(long id) {
         ObjectNode event = Json.newObject();
         event.put("action", "delete");
@@ -50,6 +77,10 @@ public class ResponseUpdaterService extends UntypedActor {
         return event;
     }
 
+    /**
+     * creates node with new record
+     * @return node
+     */
     public static ObjectNode create(Record record) {
         ObjectNode event = Json.newObject();
         event.put("action", "insert");
@@ -67,10 +98,12 @@ public class ResponseUpdaterService extends UntypedActor {
 
     private final ActorRef out;
 
+    //header
     public static Props menuProps(ActorRef out) {
         return Props.create(ResponseUpdaterService.class, out);
     }
 
+    //table
     public static Props tableProps(ActorRef out) {
         return Props.create(ResponseUpdaterService.class, out, true);
     }

@@ -10,6 +10,10 @@ import play.mvc.Result;
 import play.mvc.WebSocket;
 import views.html.responses;
 
+/**
+ * responses & web socket controller
+ */
+
 public class ResponseController extends Controller {
 
     @Transactional
@@ -34,10 +38,16 @@ public class ResponseController extends Controller {
         }
     }
 
+    /**
+     * Register header responses count web socket with akka actor
+     */
     public static WebSocket<String> registerMenu() {
         return WebSocket.withActor(ResponseUpdaterService::menuProps);
     }
 
+    /**
+     * Register responses table web socket
+     */
     public static WebSocket<JsonNode> registerTable() {
         return WebSocket.withActor(ResponseUpdaterService::tableProps);
     }

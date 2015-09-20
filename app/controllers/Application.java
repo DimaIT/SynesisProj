@@ -12,8 +12,20 @@ import views.html.index;
 
 import java.util.List;
 
+/**
+ * index controller
+ */
+
 public class Application extends Controller {
 
+    /**
+     * process '/' route
+     *
+     * @param redirect - true if redirect from response add
+     * @return  index with success message if (redirect)
+     *          response add form if fields present
+     *          fields table otherwise
+     */
     @Transactional
     public static Result index(String redirect) {
         if (Boolean.valueOf(redirect))
@@ -25,6 +37,10 @@ public class Application extends Controller {
         return redirect("/fields");
     }
 
+    /**
+     * Cleans all fields & records
+     * @return redirect to index
+     */
     @Transactional
     public static Result cleanDB() {
         CrudService.deleteAll();

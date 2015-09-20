@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Field entity
+ */
 @Entity
 @TableSettings("table.fields")
 public class Field extends Base {

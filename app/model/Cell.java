@@ -3,12 +3,15 @@ package model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+/**
+ * Record cell entity
+ */
 @Entity
 public class Cell extends Base {
     @ManyToOne
-    private Field field;
+    private Field field; // type of current cell
     @ManyToOne
-    private Record record;
+    private Record record; // parent
     private String value;
 
     public Cell() {

@@ -1,6 +1,5 @@
 package model.services;
 
-
 import model.Base;
 import model.Field;
 import model.Record;
@@ -9,6 +8,10 @@ import java.util.List;
 
 import static play.db.jpa.JPA.em;
 
+/**
+ * This service implement CRUD logic for any @Entity
+ * @param <T> - processed type
+ */
 public class CrudService<T extends Base> {
 
     private Class<T> type;
@@ -38,6 +41,9 @@ public class CrudService<T extends Base> {
         return t;
     }
 
+    /**
+     * clean up method
+     */
     public static void deleteAll() {
         new CrudService<>(Record.class).findAll().forEach(r -> em().remove(r));
         new CrudService<>(Field.class).findAll().forEach(f -> em().remove(f));
