@@ -11,7 +11,7 @@
         <div class="togglebutton togglebutton-material-cyan">
             <label>
                 @field.getLabel
-            <input class="toggle-input" id="required" name="@field.getLabel" type="checkbox">
+            <input class="toggle-input" name="@field.getLabel"  @if(field.getRequired) {required} type="checkbox">
             </label>
         </div>
     }
@@ -39,6 +39,16 @@
                     @variant
                 </label>
             }
+            </div>
+        </div>
+    }
+    case FieldType.Date => {
+        <div class="row">
+            <label class="col-xs-6 col-sm-4" style="padding-top : 0">@field.getLabel</label>
+            <div class="col-xs-6" style="margin-top: -15px;">
+                <label style="padding-top: 0">
+                    <input name="@field.getLabel" class="form-control bs-datepicker" @if(field.getRequired) {required} type="text">
+                </label>
             </div>
         </div>
     }

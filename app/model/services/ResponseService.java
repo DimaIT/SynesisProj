@@ -4,6 +4,7 @@ import model.Cell;
 import model.Field;
 import model.FieldType;
 import model.Record;
+import org.springframework.util.StringUtils;
 import play.data.Form;
 import play.db.jpa.JPA;
 import play.i18n.Messages;
@@ -33,17 +34,19 @@ public class ResponseService {
         }
     }
 
-    public static boolean saveResponse() {
+    public static String saveResponse() {
         Record newRecord = new Record(new Date());
         try {
             JPA.em().persist(newRecord);
             Record record = bindFromRequest(newRecord);
             record.getCells().forEach(cell -> JPA.em().persist(cell));
             ResponseUpdaterService.updateAll(record);
-            return true;
+            return null;
+        } catch (IllegalArgumentException e) {
+            return "Please enter all required fields";
         } catch (Exception e) {
             Reflect.errorLog(ResponseService.class, e);
-            return false;
+            return "Error";
         }
     }
 
@@ -60,6 +63,8 @@ public class ResponseService {
     }
 
     private static Cell createCell(Record record, Field field, String value) {
+        if (field.getRequired() && StringUtils.isEmpty(value))
+            throw new IllegalArgumentException();
         if (field.getType().equals(FieldType.Checkbox))
             value = value != null && value.equals("on") ? Messages.get("true") : Messages.get("false");
         return new Cell(field, record, value);

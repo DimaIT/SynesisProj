@@ -5,5 +5,6 @@ public enum FieldType {
     TextArea,
     Radiobutton,
     Select,
+    Date,
     Checkbox;
 }
