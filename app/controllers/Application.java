@@ -1,5 +1,6 @@
 package controllers;
 
+import com.google.inject.Inject;
 import model.Field;
 import model.services.CrudService;
 import model.services.FieldService;
@@ -7,6 +8,7 @@ import model.services.ResponseUpdaterService;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.With;
 import views.html.addRecord;
 import views.html.index;
 
@@ -15,8 +17,13 @@ import java.util.List;
 /**
  * index controller
  */
-
+@With(MenuAction.class)
 public class Application extends Controller {
+    @Inject
+    FieldService fieldService;
+    @Inject
+    ResponseUpdaterService responseUpdaterService;
+
 
     /**
      * process '/' route
@@ -27,10 +34,10 @@ public class Application extends Controller {
      *          fields table otherwise
      */
     @Transactional
-    public static Result index(String redirect) {
+    public Result index(String redirect) {
         if (Boolean.valueOf(redirect))
             return ok(index.render());
-        List<Field> fields = FieldService.getActualFields();
+        List<Field> fields = fieldService.getActualFields();
         if (fields.size() > 0)
             return ok(addRecord.render(fields));
         flash("message");
@@ -42,9 +49,9 @@ public class Application extends Controller {
      * @return redirect to index
      */
     @Transactional
-    public static Result cleanDB() {
+    public Result cleanDB() {
         CrudService.deleteAll();
-        ResponseUpdaterService.updateAll(0L);
+        responseUpdaterService.updateAll(0L);
         return redirect("/");
     }
 }

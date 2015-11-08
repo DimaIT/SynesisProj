@@ -17,21 +17,21 @@ import java.util.stream.Collectors;
  */
 public class FieldService {
 
-    private static EnumSet<FieldType> typesWithVars = EnumSet.of(FieldType.Radiobutton, FieldType.Select);
+    private EnumSet<FieldType> typesWithVars = EnumSet.of(FieldType.Radiobutton, FieldType.Select);
 
-    public static final CrudService<Field> crud = new CrudService<>(Field.class);
+    public final CrudService<Field> crud = new CrudService<>(Field.class);
 
-    public static List<Field> getActualFields() {
+    public List<Field> getActualFields() {
         return crud.findAll().stream().filter(Field::getActive).collect(Collectors.toList());
     }
 
-    public static String saveFromRequest(Long id) {
+    public String saveFromRequest(Long id) {
         Field field;
         try {
             if (id.equals(0L))
                 field = new Field();
             else
-                field = FieldService.crud.findOne(id);
+                field = crud.findOne(id);
             crud.save(bindFromRequest(field));
             return null;
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class FieldService {
         }
     }
 
-    private static Field bindFromRequest(Field field) {
+    private Field bindFromRequest(Field field) {
         Map<String, String> data = Form.form().bindFromRequest().data();
         FieldType type = FieldType.valueOf(data.get("type"));
 
@@ -57,7 +57,7 @@ public class FieldService {
         return field;
     }
 
-    private static List<String> getVars(Map<String, String> data) {
+    private List<String> getVars(Map<String, String> data) {
         int i = 0;
         String var;
         List<String> list = new ArrayList<>();

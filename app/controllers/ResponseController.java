@@ -1,36 +1,42 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.inject.Inject;
 import model.services.ResponseService;
 import model.services.ResponseUpdaterService;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.WebSocket;
+import play.mvc.With;
 import views.html.responses;
 
 /**
  * responses & web socket controller
  */
-
+@With(MenuAction.class)
 public class ResponseController extends Controller {
+    @Inject
+    ResponseService responseService;
+    @Inject
+    ResponseUpdaterService responseUpdaterService;
 
     @Transactional
-    public static Result responsesController() {
-        return ok(responses.render(ResponseService.table()));
+    public Result responsesController() {
+        return ok(responses.render(responseService.table()));
     }
 
     @Transactional
-    public static Result addResponse() {
-        String message = ResponseService.saveResponse();
+    public Result addResponse() {
+        String message = responseService.saveResponse();
         return message == null ? ok("redirect:/?redirect=true") : internalServerError(message);
     }
 
     @Transactional
-    public static Result responseDelete(Long id) {
+    public Result responseDelete(Long id) {
         try {
-            ResponseService.crud.delete(id);
-            ResponseUpdaterService.updateAll(id);
+            responseService.crud.delete(id);
+            responseUpdaterService.updateAll(id);
             return ok("success");
         } catch (Exception e) {
             return internalServerError("failed");
@@ -40,14 +46,14 @@ public class ResponseController extends Controller {
     /**
      * Register header responses count web socket with akka actor
      */
-    public static WebSocket<String> registerMenu() {
+    public WebSocket<String> registerMenu() {
         return WebSocket.withActor(ResponseUpdaterService::menuProps);
     }
 
     /**
      * Register responses table web socket
      */
-    public static WebSocket<JsonNode> registerTable() {
+    public WebSocket<JsonNode> registerTable() {
         return WebSocket.withActor(ResponseUpdaterService::tableProps);
     }
 }

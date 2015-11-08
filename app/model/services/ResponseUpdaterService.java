@@ -2,8 +2,8 @@ package model.services;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
-import akka.actor.UntypedActor;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.inject.Inject;
 import model.Cell;
 import model.Record;
 import play.i18n.Messages;
@@ -17,13 +17,23 @@ import java.util.concurrent.ConcurrentHashMap;
  * Web socket service
  * updates header response count & response table
  */
-public class ResponseUpdaterService extends UntypedActor {
+public class ResponseUpdaterService {
+
+    @Inject
+    ResponseService responseService;
 
     /**
      * Actor's refs
      */
     private static Set<ActorRef> menuUpdaters = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private static Set<ActorRef> tableUpdaters = Collections.newSetFromMap(new ConcurrentHashMap<>());
+
+    public static void addMenuUpdater(ActorRef actor) {
+        menuUpdaters.add(actor);
+    }
+    public static void addTableUpdater(ActorRef actor) {
+        tableUpdaters.add(actor);
+    }
 
     /**
      * Updates headers
@@ -50,8 +60,8 @@ public class ResponseUpdaterService extends UntypedActor {
     /**
      * updates with new record
      */
-    public static void updateAll(Record record) {
-        updateMenu(ResponseService.countRecords());
+    public void updateAll(Record record) {
+        updateMenu(responseService.countRecords());
         updateTable(create(record));
     }
 
@@ -59,8 +69,8 @@ public class ResponseUpdaterService extends UntypedActor {
      * updates with deleted record
      * @param id of record
      */
-    public static void updateAll(long id) {
-        updateMenu(ResponseService.countRecords());
+    public void updateAll(long id) {
+        updateMenu(responseService.countRecords());
         updateTable(create(id));
     }
 
@@ -95,32 +105,15 @@ public class ResponseUpdaterService extends UntypedActor {
         return event;
     }
 
-
-    private final ActorRef out;
-
     //header
     public static Props menuProps(ActorRef out) {
-        return Props.create(ResponseUpdaterService.class, out);
+        return Props.create(ResponseUpdater.class, out);
     }
 
     //table
     public static Props tableProps(ActorRef out) {
-        return Props.create(ResponseUpdaterService.class, out, true);
+        return Props.create(ResponseUpdater.class, out, true);
     }
 
-    public ResponseUpdaterService(ActorRef out) {
-        out.tell(String.valueOf(ResponseService.countRecords()), ActorRef.noSender());
-        this.out = out;
-        menuUpdaters.add(out);
-    }
-
-    public ResponseUpdaterService(ActorRef out, boolean table) {
-        this.out = out;
-        tableUpdaters.add(out);
-    }
-
-    public void onReceive(Object message) throws Exception {
-        out.tell(message, self());
-    }
 
 }

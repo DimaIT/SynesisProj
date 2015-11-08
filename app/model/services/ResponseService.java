@@ -1,5 +1,6 @@
 package model.services;
 
+import com.google.inject.Inject;
 import model.Cell;
 import model.Field;
 import model.FieldType;
@@ -22,11 +23,15 @@ import java.util.stream.Collectors;
  * - creates response table
  */
 public class ResponseService {
+    @Inject
+    FieldService fieldService;
+    @Inject
+    ResponseUpdaterService responseUpdaterService;
 
-    public static final CrudService<Record> crud = new CrudService<>(Record.class);
-    private static long recordsCount = 0;
+    public final CrudService<Record> crud = new CrudService<>(Record.class);
+    private long recordsCount = 0;
 
-    public static Long countRecords() {
+    public Long countRecords() {
         try {
             return (recordsCount = JPA.em().createQuery("Select count(*) from Record", Long.class).getSingleResult());
         } catch (Exception e) {
@@ -34,13 +39,13 @@ public class ResponseService {
         }
     }
 
-    public static String saveResponse() {
+    public String saveResponse() {
         Record newRecord = new Record(new Date());
         try {
             JPA.em().persist(newRecord);
             Record record = bindFromRequest(newRecord);
             record.getCells().forEach(cell -> JPA.em().persist(cell));
-            ResponseUpdaterService.updateAll(record);
+            responseUpdaterService.updateAll(record);
             return null;
         } catch (IllegalArgumentException e) {
             return "Please enter all required fields";
@@ -50,9 +55,9 @@ public class ResponseService {
         }
     }
 
-    private static Record bindFromRequest(Record record) {
+    private Record bindFromRequest(Record record) {
         Map<String, String> data = Form.form().bindFromRequest().data();
-        List<Field> fields = FieldService.getActualFields();
+        List<Field> fields = fieldService.getActualFields();
 
         Set<Cell> cells = fields.stream()
                 .map(field -> createCell(record, field, data.get(field.getLabel())))
@@ -62,7 +67,7 @@ public class ResponseService {
         return record;
     }
 
-    private static Cell createCell(Record record, Field field, String value) {
+    private Cell createCell(Record record, Field field, String value) {
         if (field.getRequired() && StringUtils.isEmpty(value))
             throw new IllegalArgumentException();
         if (field.getType().equals(FieldType.Checkbox))
@@ -70,11 +75,11 @@ public class ResponseService {
         return new Cell(field, record, value);
     }
 
-    public static TableRepresentation table() {
+    public TableRepresentation table() {
         TableRepresentation table = new TableRepresentation();
         List<Record> recordList = crud.findAll();
         recordsCount = recordList.size();
-        List<Field> fieldList = FieldService.getActualFields();
+        List<Field> fieldList = fieldService.getActualFields();
         fillTable(table, recordList, fieldList);
 
         table.getProperties()
@@ -84,7 +89,7 @@ public class ResponseService {
         return table;
     }
 
-    private static void fillTable(TableRepresentation table, List<Record> list, List<Field> fields) {
+    private void fillTable(TableRepresentation table, List<Record> list, List<Field> fields) {
         fields.forEach(field -> table.addHeaderAttribute(field.getLabel()));
         table.setColumnsCount(fields.size());
         for (Record record : list) {
@@ -92,7 +97,7 @@ public class ResponseService {
         }
     }
 
-    private static TableRecord createRecord(List<Field> fields, Record record) {
+    private TableRecord createRecord(List<Field> fields, Record record) {
         List<String> values = new ArrayList<>();
         fields.forEach(field -> values.add(record.findCellByField(field)
                 .map(Cell::getValue)
