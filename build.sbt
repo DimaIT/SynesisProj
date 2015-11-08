@@ -1,5 +1,4 @@
 import com.typesafe.sbt.less.Import.LessKeys
-import play.PlayImport._
 
 name := "playtestproject"
 
@@ -14,7 +13,7 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   javaJpa,
-    "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
+  "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
   "org.hibernate" % "hibernate-entitymanager" % "3.6.9.Final")
 
 unmanagedResourceDirectories in Test <+= baseDirectory(_ / "target/web/public/test")
