@@ -2,12 +2,12 @@ package controllers;
 
 import com.google.inject.Inject;
 import model.Field;
-import model.services.FieldService;
 import play.db.jpa.Transactional;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
+import services.impl.FieldServiceImpl;
 import util.tableUtil.tableServices.RepresentationService;
 import views.html.addField;
 import views.html.fields;
@@ -18,7 +18,7 @@ import views.html.fields;
 @With(MenuAction.class)
 public class FieldController extends Controller {
     @Inject
-    FieldService fieldService;
+    FieldServiceImpl fieldService;
 
     @Transactional
     public Result fields() {

@@ -1,9 +1,11 @@
-package model.services;
+package services.impl;
 
 import model.Field;
 import model.FieldType;
 import play.data.Form;
 import play.i18n.Messages;
+import services.CrudService;
+import services.FieldService;
 import util.Reflect;
 
 import java.util.*;
@@ -15,16 +17,18 @@ import java.util.stream.Collectors;
  * - get actual field list
  * - gives access to field crud service
  */
-public class FieldService {
+public class FieldServiceImpl implements FieldService {
 
     private EnumSet<FieldType> typesWithVars = EnumSet.of(FieldType.Radiobutton, FieldType.Select);
 
     public final CrudService<Field> crud = new CrudService<>(Field.class);
 
+    @Override
     public List<Field> getActualFields() {
         return crud.findAll().stream().filter(Field::getActive).collect(Collectors.toList());
     }
 
+    @Override
     public String saveFromRequest(Long id) {
         Field field;
         try {
@@ -35,12 +39,13 @@ public class FieldService {
             crud.save(bindFromRequest(field));
             return null;
         } catch (Exception e) {
-            Reflect.errorLog(FieldService.class, e);
+            Reflect.errorLog(FieldServiceImpl.class, e);
             return Messages.get("fields.add.error");
         }
     }
 
-    private Field bindFromRequest(Field field) {
+    @Override
+    public Field bindFromRequest(Field field) {
         Map<String, String> data = Form.form().bindFromRequest().data();
         FieldType type = FieldType.valueOf(data.get("type"));
 
@@ -57,7 +62,8 @@ public class FieldService {
         return field;
     }
 
-    private List<String> getVars(Map<String, String> data) {
+    @Override
+    public List<String> getVars(Map<String, String> data) {
         int i = 0;
         String var;
         List<String> list = new ArrayList<>();

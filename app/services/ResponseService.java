@@ -1,4 +1,4 @@
-package model.services;
+package services;
 
 import com.google.inject.Inject;
 import model.Cell;
@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import play.data.Form;
 import play.db.jpa.JPA;
 import play.i18n.Messages;
+import services.impl.FieldServiceImpl;
 import util.Reflect;
 import util.tableUtil.TableRecord;
 import util.tableUtil.tables.TableRepresentation;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
  */
 public class ResponseService {
     @Inject
-    FieldService fieldService;
+    FieldServiceImpl fieldService;
     @Inject
     ResponseUpdaterService responseUpdaterService;
 

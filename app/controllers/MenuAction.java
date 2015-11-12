@@ -1,10 +1,10 @@
 package controllers;
 
 import com.google.inject.Inject;
-import model.services.ResponseService;
 import play.libs.F;
 import play.mvc.Http;
 import play.mvc.Result;
+import services.ResponseService;
 
 public class MenuAction extends play.mvc.Action.Simple {
     public static final String MENU_RESPONSES = "response_count";

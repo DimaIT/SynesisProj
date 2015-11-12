@@ -94,7 +94,7 @@ public final class Reflect {
                 return Class.forName(capitalize(className));
             }
         } catch (ClassNotFoundException e) {
-            logger.error("Class with name " + className + " doesn't found");
+            logger.error("Class with name " + className + " not found");
             return null;
         }
     }

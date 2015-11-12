@@ -2,13 +2,13 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
-import model.services.ResponseService;
-import model.services.ResponseUpdaterService;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.WebSocket;
 import play.mvc.With;
+import services.ResponseService;
+import services.ResponseUpdaterService;
 import views.html.responses;
 
 /**

@@ -1,4 +1,4 @@
-package model.services;
+package services;
 
 import akka.actor.ActorRef;
 import akka.actor.Props;
