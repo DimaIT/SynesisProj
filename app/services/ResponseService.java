@@ -103,7 +103,7 @@ public class ResponseService {
         fields.forEach(field -> values.add(record.findCellByField(field)
                 .map(Cell::getValue)
                 .orElse(Messages.get("not.available"))));
-        return new TableRecord(record.getId(), values);
+        return new TableRecord(record.getUuid(), values);
     }
 
 }

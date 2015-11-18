@@ -1,14 +1,14 @@
 # Home page
-GET           /                     @controllers.Application.index(redirect : String ?= "false" )
-GET           /responses            @controllers.ResponseController.responsesController
-DELETE        /responses/:id        @controllers.ResponseController.responseDelete(id: Long)
-POST          /                     @controllers.ResponseController.addResponse
-GET           /menu/updater         @controllers.ResponseController.registerMenu
-GET           /table/updater        @controllers.ResponseController.registerTable
-GET           /fields               @controllers.FieldController.fields
-GET           /fields/:id           @controllers.FieldController.field(id: Long)
-POST          /fields/:id           @controllers.FieldController.saveField(id: Long)
-DELETE        /fields/:id           @controllers.FieldController.deleteField(id: Long)
+GET           /                             @controllers.Application.index(redirect : String ?= "false" )
+GET           /responses                    @controllers.ResponseController.responsesController
+DELETE        /responses/:uuid              @controllers.ResponseController.responseDelete(uuid: String)
+POST          /                             @controllers.ResponseController.addResponse
+GET           /menu/updater                 @controllers.ResponseController.registerMenu
+GET           /table/updater                @controllers.ResponseController.registerTable
+GET           /fields                       @controllers.FieldController.fields
+GET           /fields/:uuid                 @controllers.FieldController.field(uuid: String)
+POST          /fields/                      @controllers.FieldController.saveField(uuid: String ?= "none")
+DELETE        /fields/:uuid                 @controllers.FieldController.deleteField(uuid: String)
 
 GET           /secret/route/to/clean/db     @controllers.Application.cleanDB
 

@@ -17,8 +17,8 @@ public class TableRepresentation extends Table {
     public TableRepresentation() {
     }
 
-    public void addRecord(long id, List<String> list) {
-        tableRecords.add(new TableRecord(id, list));
+    public void addRecord(String uuid, List<String> list) {
+        tableRecords.add(new TableRecord(uuid, list));
     }
 
     public void addRecord(TableRecord tableRecord) {

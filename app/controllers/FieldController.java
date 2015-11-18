@@ -27,31 +27,31 @@ public class FieldController extends Controller {
 
     /**
      * add/edit record form controller
-     * @param id of edited record or 0 overwice
+     * @param uuid of edited record or 0 overwice
      * @return field add/edit form
      */
     @Transactional
-    public Result field(Long id) {
+    public Result field(String uuid) {
         Field field;
-        if (!id.equals(0L))
-            field = fieldService.crud.findOne(id);
+        if (!uuid.equals(FieldServiceImpl.EMPTY_UUID))
+            field = fieldService.crud.findOne(uuid);
         else {
             field = new Field();
-            field.setId(0L);
+            field.setUuid(null);
         }
         return ok(addField.render(field));
     }
 
     @Transactional
-    public Result saveField(Long id) {
-        String message = fieldService.saveFromRequest(id);
+    public Result saveField(String uuid) {
+        String message = fieldService.saveFromRequest(uuid);
         return message == null ? ok("redirect:/fields") : internalServerError(Messages.get("error.message") + "; " + message);
     }
 
     @Transactional
-    public Result deleteField(Long id) {
+    public Result deleteField(String uuid) {
         try {
-            fieldService.crud.delete(id);
+            fieldService.crud.delete(uuid);
             return ok("success");
         } catch (Exception e) {
             return internalServerError("failed");

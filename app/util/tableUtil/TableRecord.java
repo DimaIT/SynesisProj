@@ -5,7 +5,7 @@ import java.util.List;
 
 public class TableRecord {
     protected List<String> columns;
-    protected long id;
+    protected String uuid;
     protected String value;
 
     public void removeField(int index){
@@ -20,9 +20,9 @@ public class TableRecord {
         columns = new ArrayList<>();
     }
 
-    public TableRecord(long id, List<String> columns) {
+    public TableRecord(String uuid, List<String> columns) {
         this.columns = columns;
-        this.id = id;
+        this.uuid = uuid;
     }
 
     public List<String> getColumns() {
@@ -33,12 +33,12 @@ public class TableRecord {
         this.columns = columns;
     }
 
-    public long getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getValue() {

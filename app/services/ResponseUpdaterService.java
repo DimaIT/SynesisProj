@@ -67,22 +67,22 @@ public class ResponseUpdaterService {
 
     /**
      * updates with deleted record
-     * @param id of record
+     * @param uuid of record
      */
-    public void updateAll(long id) {
+    public void updateAll(String uuid) {
         updateMenu(responseService.countRecords());
-        updateTable(create(id));
+        updateTable(create(uuid));
     }
 
     /**
      * creates json node for row deletion
-     * @param id of record
+     * @param uuid of record
      * @return node
      */
-    public static ObjectNode create(long id) {
+    public static ObjectNode create(String uuid) {
         ObjectNode event = Json.newObject();
         event.put("action", "delete");
-        event.put("id", id);
+        event.put("uuid", uuid);
 
         return event;
     }
@@ -94,7 +94,7 @@ public class ResponseUpdaterService {
     public static ObjectNode create(Record record) {
         ObjectNode event = Json.newObject();
         event.put("action", "insert");
-        event.put("id", record.getId());
+        event.put("id", record.getUuid());
 
         for (Cell cell : record.getCells()) {
             event.put(cell.getField().getLabel().replace(' ', '_'), cell.getValue() == null

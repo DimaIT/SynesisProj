@@ -33,10 +33,10 @@ public class ResponseController extends Controller {
     }
 
     @Transactional
-    public Result responseDelete(Long id) {
+    public Result responseDelete(String uuid) {
         try {
-            responseService.crud.delete(id);
-            responseUpdaterService.updateAll(id);
+            responseService.crud.delete(uuid);
+            responseUpdaterService.updateAll(uuid);
             return ok("success");
         } catch (Exception e) {
             return internalServerError("failed");

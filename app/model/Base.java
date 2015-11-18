@@ -1,25 +1,24 @@
 package model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import java.util.UUID;
 
 /**
  * Base entity class with Long id
  */
 @MappedSuperclass
-public class Base {
+public abstract class Base {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @org.hibernate.annotations.Type(type="pg-uuid")
+    private UUID uuid = UUID.randomUUID();
 
-    public Long getId() {
-        return id;
+    public String getUuid() {
+        return uuid != null ? uuid.toString() : null;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid == null ? null : UUID.fromString(uuid);
     }
 }

@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  * - gives access to field crud service
  */
 public class FieldServiceImpl implements FieldService {
+    public static final String EMPTY_UUID = "none";
 
     private EnumSet<FieldType> typesWithVars = EnumSet.of(FieldType.Radiobutton, FieldType.Select);
 
@@ -29,13 +30,13 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public String saveFromRequest(Long id) {
+    public String saveFromRequest(String uuid) {
         Field field;
         try {
-            if (id.equals(0L))
+            if (uuid.isEmpty() || uuid.equals(EMPTY_UUID))
                 field = new Field();
             else
-                field = crud.findOne(id);
+                field = crud.findOne(uuid);
             crud.save(bindFromRequest(field));
             return null;
         } catch (Exception e) {

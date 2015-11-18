@@ -85,8 +85,8 @@ public final class RepresentationService {
     private static TableRecord getRecord(Iterable<Method> getters, Object entity) {
         TableRecord tableRecord = new TableRecord();
         try {
-            Long id = (Long) entity.getClass().getMethod("getId").invoke(entity);
-            tableRecord.setId(id);
+            String id = (String) entity.getClass().getMethod("getUuid").invoke(entity);
+            tableRecord.setUuid(id);
         } catch (Exception e) {
             try {
                 logger.error("Caught exception(" + e.getMessage() + ") while getting id of " + entity);

@@ -55,7 +55,7 @@ public class Application extends Controller {
     @Transactional
     public Result cleanDB() {
         CrudService.deleteAll();
-        responseUpdaterService.updateAll(0L);
+        responseUpdaterService.updateAll("");
         return redirect("/");
     }
 

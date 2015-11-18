@@ -45,7 +45,7 @@
         };
     </script>
     <div class="col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4 well">
-        <form id="form-ajax-submit" action="@routes.FieldController.saveField(field.getId).url" method="@routes.FieldController.saveField(field.getId).method">
+        <form id="form-ajax-submit" action="@routes.FieldController.saveField(field.getUuid).url" method="@routes.FieldController.saveField(field.getUuid).method">
             <div class="form-group-material-cyan field-input-form">
                 <input type="text" required name="label" id="label" class="form-control floating-label"
                     placeholder="@Messages("input.label")" value="@field.getLabel">

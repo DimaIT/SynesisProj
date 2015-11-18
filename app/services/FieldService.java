@@ -14,7 +14,7 @@ import java.util.Map;
 public interface FieldService {
     List<Field> getActualFields();
 
-    String saveFromRequest(Long id);
+    String saveFromRequest(String uuid);
 
     Field bindFromRequest(Field field);
 

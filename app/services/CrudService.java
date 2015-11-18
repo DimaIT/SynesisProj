@@ -5,6 +5,7 @@ import model.Field;
 import model.Record;
 
 import java.util.List;
+import java.util.UUID;
 
 import static play.db.jpa.JPA.em;
 
@@ -21,16 +22,16 @@ public class CrudService<T extends Base> {
         type = (Class<T>) clazz;
     }
 
-    public T findOne(Long id) {
-        return em().find(type, id);
+    public T findOne(String uuid) {
+        return em().find(type, UUID.fromString(uuid));
     }
 
     public List<T> findAll() {
         return em().createQuery("SELECT a FROM " + type.getSimpleName() + " a", type).getResultList();
     }
 
-    public void delete(Long id) {
-        em().remove(em().getReference(type, id));
+    public void delete(String uuid) {
+        em().remove(em().getReference(type, UUID.fromString(uuid)));
     }
 
     public T save(T entity) {

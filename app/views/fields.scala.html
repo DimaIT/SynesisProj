@@ -1,8 +1,9 @@
+@import services.impl.FieldServiceImpl
 @import util.tableUtil.tables.TableRepresentation
 @(table: TableRepresentation)
 
 @main(Messages("fields")) {
     <div class="container">
-        @fragments.tableFragment(table, "fields/0", "fields")
+        @fragments.tableFragment(table, "fields/" + FieldServiceImpl.EMPTY_UUID, "fields")
     </div>
 }
